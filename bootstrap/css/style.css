@@ -1,0 +1,23 @@
+#selectedDate {
+    background-color: #005599 !important;
+    color: white !important;
+     margin-left:11 0px !important;
+     margin-right: 0px!important;
+
+}
+.selectblock {
+   // margin-left: 0px;
+   // margin-right: 0px;
+
+}
+#day{
+    width: 100px!important;
+    margin-left: 0px!important;
+    margin-right: 0px!important;
+}
+div#daysel.ui-grid-a .ui-block-a {
+    width: 60%!important;
+}
+div#daysel.ui-grid-a .ui-block-b {
+    width: 40%!important;
+}

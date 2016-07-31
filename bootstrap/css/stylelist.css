@@ -1,0 +1,59 @@
+.my-page .ui-content {
+    margin-top: 20px;
+    padding-top: 0px;
+}
+.my-page .ui-content ul{
+    margin-top: 40px;
+
+}
+.ui-content{
+    margin-top;: 20px !important;
+}
+.head {
+    font-size: 20px !important;
+    margin:10px !important;
+}
+.sub-content{
+    font-size: 14px!important;
+    margin: 0px !important;
+}
+.sub-title {
+    font-size: 20px!important;
+    margin: 0px !important;
+    color: #999999;
+}
+.ui-content li{
+    height: 100px !important;
+}
+.ui-li .ui-btn-inner a.ui-link-inherit, .ui-li-static.ui-li {
+    padding-top:5px;
+    padding-bottom:5px;
+}
+div#contents {
+    width:auto;height:auto;padding:10px;border:#909090 0px solid;background:#fff;color:#333;
+    filter:progid:DXImageTransform.Microsoft.Shadow(color=#909090,direction=120,strength=4);/*ie*/
+    -moz-box-shadow: 2px 2px 10px #909090;/*firefox*/
+    -webkit-box-shadow: 2px 2px 10px #909090;/*safari或chrome*/
+    box-shadow:2px 2px 10px #909090;/*opera或ie9*/
+
+}
+.ui-li-thumb {
+    width:auto;height:auto;padding:0px;border:#909090 1px solid;background:#fff;color:#333;
+    filter:progid:DXImageTransform.Microsoft.Shadow(color=#909090,direction=120,strength=4);/*ie*/
+    -moz-box-shadow: 1px 1px 1px #909090;/*firefox*/
+    -webkit-box-shadow: 1px 1px 1px #909090;/*safari或chrome*/
+    box-shadow:1px 1px 1px #909090;/*opera或ie9*/
+}
+div.circle{
+    width:50px;
+    height:50px;
+    border-radius:50%;
+    font-size:25px;
+    color:#000;
+    line-height: 50px;
+    text-align:center;
+    background:#fff
+}
+.btnx {
+    width: 50%;
+}

@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>请假审批</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- 引入 jQuery Mobile 样式 -->
+    <link rel="stylesheet" href="http://apps.bdimg.com/libs/jquerymobile/1.4.5/jquery.mobile-1.4.5.min.css">
+    <!-- 引入 jQuery 库 -->
+    <script src="http://apps.bdimg.com/libs/jquery/1.10.2/jquery.min.js"></script>
+    <!-- 引入 jQuery Mobile 库 -->
+    <script src="http://apps.bdimg.com/libs/jquerymobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+    <link rel="stylesheet" href="bootstrap/css/stylelist.css">
+    <script src="bootstrap/js/myjs.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var User;
+            var code = getQueryString('code');
+            var url = "http://180.166.99.166:18000/sap/opu/odata/SAP/ZWC_TOKEN_SRV2/useridSet(Code='" + code + "',Corpid='wx5b339b6001b3f1d6',Corpsecret='jKfkQy3OxQqkveyx3bMN4W_dolVWaptrV1PO_a0AF7MPpPs_IW1WgwENbjAn-eXI')?format=json";
+            // alert(url);
+          //  console.log('ready');
+            data =   $.ajax({
+                cache:false,
+                type: "get",
+                dataType: "json",
+                async : true,
+                url:url   ,
+                success:function(data){
+                    User = data.d.Userid;
+
+                    User2 = "'REP'";
+                    console.log(User);
+                    User4 = User.toUpperCase();
+                    var User3 = User2.replace("REP",User4);
+
+
+                    var url = "/sap/opu/odata/SAP/Z_LEAVE_SRV/leave02Set?$filter=Wechatno eq " + User3 + "&$format=json";
+                    //  var User = getQueryString('User');
+
+                    // alert(url);
+                    console.log(url);
+
+                    console.log('try to get the ajax');
+                    data = $.ajax({
+                        type: "GET",
+                        dataType: "JSON",
+                        cache: false,
+                        async:false,
+                        url: url,
+                        success: function (data) {
+                            console.log(data);
+                            var arrList = data.d.results;
+                            console.log(data.d.results);
+                            console.log(arrList);
+                            $.each(arrList, function (n, value) {
+                                $(".ui-content").append(
+                                        '<div class="ui-body ui-body-a" data-corners="false" id="contents">' +
+                                        '<img src="' + value.Avatar + '" class="ui-li-thumb" style="float: left">' +
+                                        '<h3 style="text-align: left;float: left;color:#333333;margin-left: 5px">' + value.Idname + '</h3>' + '<p class="ui-li-aside" style="text-align: right;float: right;margin-top: 0px;color: #333333;font-family: 方正姚体">' +
+                                        value.Zdnum + '天' + '</p>' +
+                                        '<br>' + '<h3 style="text-align: right;color: rgba(26, 47, 21, 0.13);font-family: 华文行楷;margin: 0px;padding: 0px;border: 0px">' + value.Typet + '</h3>' +
+                                        '<h4 style="font-family: 微软雅黑;text-align: right;margin: 3px;padding: 0px;border: 0px">' + value.Memo1 + '</h4>' +
+                                        '<span style="font-size:x-small;font-family: 微软雅黑;text-align: right;margin: 3px;padding: 0px;border: 0px">' + value.Ditem + '</span>' +
+                                        '<div class="ui-grid-b"><div class="ui-block-a"><a class="btnx ui-btn ui-btn-b ui-btn-icon-left ui-icon-check" data-mini="true" data-corners="false" style="font-size: 75%" id="approve">同意</a></div>' +
+                                        '<div class="ui-block-b"><a href="#message" data-rel="popup" data-position-to="window" data-transition="pop" class="btnx ui-btn ui-btn-b ui-btn-icon-left ui-icon-forbidden" type="button" style="font-size: 75%"  data-corners="false" data-mini="true" >拒绝</a></div>' +
+                                        '<div class="ui-block-c"><a href="tel:' + value.Mobile + '" class="btnx ui-btn ui-btn-b ui-btn-icon-left ui-icon-phone" type="button" data-corners="false" style="font-size: 75%" data-mini="true" >电话</a></div></div>'
+                                ).trigger('create');
+
+
+                            });
+                        }
+                    });          //  var User = getQueryString('User');
+    /*
+                     alert(url);
+                    console.log(url);
+
+                    console.log('try to get the ajax');
+                    data = $.ajax({
+                        type: "GET",
+                        dataType: "JSON",
+                        cache: false,
+                        url: url,
+                        success: function (data) {
+                            console.log(data);
+                            var arrList = data.d.results;
+                            console.log(data.d.results);
+                            console.log(arrList);
+                            $.each(arrList, function (n, value) {
+                                $(".ui-content").append(
+                                        '<div class="ui-body ui-body-a" data-corners="false" id="contents">' +
+                                        '<img src="' + value.Avatar + '" class="ui-li-thumb" style="float: left">' +
+                                        '<h3 style="text-align: left;float: left;color:#333333;margin-left: 5px">' + value.Idname + '</h3>' + '<p class="ui-li-aside" style="text-align: right;float: right;margin-top: 0px;color: #333333;font-family: 方正姚体">' +
+                                        value.Zdnum + '天' + '</p>' +
+                                        '<br>' + '<h3 style="text-align: right;color: rgba(26, 47, 21, 0.13);font-family: 华文行楷;margin: 0px;padding: 0px;border: 0px">' + value.Typet + '</h3>' +
+                                        '<h4 style="font-family: 微软雅黑;text-align: right;margin: 3px;padding: 0px;border: 0px">' + value.Memo1 + '</h4>' +
+                                        '<span style="font-size:x-small;font-family: 微软雅黑;text-align: right;margin: 3px;padding: 0px;border: 0px">' + value.Ditem + '</span>' +
+                                        '<div class="ui-grid-b"><div class="ui-block-a"><a class="btnx ui-btn ui-btn-b ui-btn-icon-left ui-icon-check" data-mini="true" data-corners="false" style="font-size: 75%" id="approve">同意</a></div>' +
+                                        '<div class="ui-block-b"><a href="#message" data-rel="popup" data-position-to="window" data-transition="pop" class="btnx ui-btn ui-btn-b ui-btn-icon-left ui-icon-forbidden" type="button" style="font-size: 75%"  data-corners="false" data-mini="true" >拒绝</a></div>' +
+                                        '<div class="ui-block-c"><a href="tel:' + value.Mobile + '" class="btnx ui-btn ui-btn-b ui-btn-icon-left ui-icon-phone" type="button" data-corners="false" style="font-size: 75%" data-mini="true" >电话</a></div></div>'
+                                ).trigger('create');
+
+
+                            });
+                        }
+                    });*/
+
+
+
+                }
+            });
+
+
+
+
+
+
+
+        })
+    </script>
+</head>
+<body>
+
+
+
+<div data-role="page"  id="demo-page" class="my-page" data-url="demo-page">
+      <div role="main" class="ui-content" style="padding: 5px;margin-top: -15px">
+<div id="log">
+
+</div>
+    <div data-role="popup" id="message" data-theme="a" class="ui-corner-all">
+        <div data-role="header" data-theme="b" role="banner" class="ui-header ui-bar-b">
+            <a role="button" href="#" class="ui-btn ui-icon-delete ui-btn-icon-notext ui-btn-left" data-corners="false" data-rel="back">Close</a>
+            <h1 class="ui-title" role="heading" aria-level="1">输入消息</h1>
+        </div>
+        <div class="ui-content" role="main" style="padding-top: 0px" >
+            <textarea name="textarea-1" id="textarea-1" data-corners="false"></textarea>
+            <a href="index.html" class="ui-btn ui-shadow ui-btn-b" data-corners="false" data-rel="back">确认</a>
+        </div>
+    </div>
+</div>
+
+</div><!-- /content -->
+
+
+<script>
+
+    $(function () {
+        $('#approve').on('click',function(){
+            $(this).parentsUntil('#demo-page').remove();
+        })
+
+
+
+    })
+
+
+
+</script>
+
+
+
+</body>
+</html>

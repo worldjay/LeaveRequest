@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>扫描测试</title>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- 引入 jQuery Mobile 样式 -->
+    <link rel="stylesheet" href="http://apps.bdimg.com/libs/jquerymobile/1.4.5/jquery.mobile-1.4.5.min.css">
+
+    <!-- 引入 jQuery 库 -->
+    <script src="http://apps.bdimg.com/libs/jquery/1.10.2/jquery.min.js"></script>
+
+    <!-- 引入 jQuery Mobile 库 -->
+    <script src="http://apps.bdimg.com/libs/jquerymobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+    <script src="http://res.wx.qq.com/open/js/jweixin-1.1.0.js"></script>
+    <link rel="stylesheet" href="bootstrap/css/jquery.mobile.datepicker.css">
+    <link rel="stylesheet" href="bootstrap/css/jquery.mobile.datepicker.theme.css">
+    <link rel="stylesheet" href="bootstrap/css/style.css">
+</head>
+<body>
+<p>扫描内容: <input type="text" name="user" value="" /></p>
+<button id="scan">扫描</button>
+
+
+
+<script>
+    $(function () {
+        wx.config({
+            debug: true, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+            appId: 'wx5b339b6001b3f1d6', // 必填，企业号的唯一标识，此处填写企业号corpid
+            timestamp: , // 必填，生成签名的时间戳
+            nonceStr: '', // 必填，生成签名的随机串
+            signature: '',// 必填，签名，见附录1
+            jsApiList: [] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
+        });
+        $("#scan").click(function(){
+            wx.scanQRCode({
+                desc: 'scanQRCode desc',
+                needResult: 1, // 默认为0，扫描结果由微信处理，1则直接返回扫描结果，
+                scanType: ["qrCode","barCode"], // 可以指定扫二维码还是一维码，默认二者都有
+                success: function (res) {
+                    $(":text").val(res.resultStr);
+
+                }
+            });
+        })
+
+    })
+
+</script>
+</body>
+
+</html>

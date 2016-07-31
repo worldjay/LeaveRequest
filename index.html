@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>请假申请</title>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- 引入 jQuery Mobile 样式 -->
+    <link rel="stylesheet" href="http://apps.bdimg.com/libs/jquerymobile/1.4.5/jquery.mobile-1.4.5.min.css">
+
+    <!-- 引入 jQuery 库 -->
+    <script src="http://apps.bdimg.com/libs/jquery/1.10.2/jquery.min.js"></script>
+
+    <!-- 引入 jQuery Mobile 库 -->
+    <script src="http://apps.bdimg.com/libs/jquerymobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+    <link rel="stylesheet" href="bootstrap/css/jquery.mobile.datepicker.css">
+    <link rel="stylesheet" href="bootstrap/css/jquery.mobile.datepicker.theme.css">
+    <link rel="stylesheet" href="bootstrap/css/style.css">
+    <!--<script src="bootstrap/js/jquery.mobile.datepicker.js"></script>-->
+    <script src="bootstrap/js/datepicker.js"></script>
+    <script src="bootstrap/js/myjs.js"></script>
+    <script type="text/javascript">
+        var req = {
+            "Wechatno": "PANXIAOFENG",
+            "Leavetyp": "",
+            "Memo": "",
+            "ReqDatesSet":
+                    []
+        }
+        var ReqDatesSet = [];
+        var singleday = {
+            "Wechatno": "",
+            "Datum": "",
+            "Zday": "0"
+        }
+
+        $(document).ready(function () {
+            var code = getQueryString('code');
+            var url = "10.166.2.105:18000/sap/opu/odata/SAP/ZWC_TOKEN_SRV2/useridSet(Code='" + code + "',Corpid='wx5b339b6001b3f1d6',Corpsecret='jKfkQy3OxQqkveyx3bMN4W_dolVWaptrV1PO_a0AF7MPpPs_IW1WgwENbjAn-eXI')";
+           // alert(url);
+            console.log('ready');
+                  data =   $.ajax({
+                      cache:false,
+                      type: "get",
+                      dataType: "json",
+                      url:url   ,
+                      async:false,
+                      success:function(data){
+
+                            console.log(data.d.Userid);
+                          console.log(data.d.Corpsecret);
+                          alert(data.d.Userid);
+                           req.Wechatno = data.d.Userid;
+                          singleday.Wechatno = data.d.Userid;
+
+                        }
+                    });
+
+        }
+       )
+    </script>
+</head>
+
+<body>
+<div data-role="page">
+
+    <div role="main" class="ui-content">
+        <div class="container">
+
+            <div id="datepicker">
+            </div>
+        </div>
+        <div data-role="popup" id="addReason" data-theme="a"  style="padding:5px 5px;">
+
+            <textarea name="textarea-1" id="textarea-1" placeholder="请输入具体请假原因..."></textarea>
+            <a href="#" data-rel="back"
+               class="ui-btn u ui-shadow ui-btn-a ui-icon-delete  ui-btn-icon-notext ui-btn-right">确认</a>
+        </div>
+        <div class="reqtype">
+            <select name="reqType" data-corners="false" id="day">
+                <option value="1">年假</option>
+                <option value="2">事假</option>
+                <option value="3">病假</option>
+            </select>
+        </div>
+
+
+        <div class="selectedDate" style="padding: 0px;margin: 0px;border: 0px">
+            </div>
+
+    </div>
+    <div data-role="footer" data-position="fixed">
+        <a href="#addReason" data-rel="popup" data-position-to="window" data-transition="pop"
+           class="ui-btn  ui-shadow ui-btn-inline ui-icon-edit ui-btn-icon-left ui-btn-a"
+        style="margin-left: 5px">请假原因</a>
+
+        <a class="ui-btn  ui-shadow ui-btn-inline ui-icon-check ui-btn-icon-left ui-btn-a"
+        style="float:right" id="submit" >提交</a>
+    </div>
+</div>
+
+
+
+<script>
+//    $(document).ready(function() {
+//        $("#leaveDate").datepicker({
+//            onSelect: function (dates) {
+//                console.log(dates);
+//
+////                leaveDates.push($('#leaveDate').val());
+////                console.log($('#leaveDate').val());
+////                $('#leaveDate').val("");
+//            },
+//            selectWeek: true,
+//            inline: true,
+//            startDate: '01/01/2000',
+//        });
+//    });
+
+
+$(function () {
+
+        var leaveDates = new Array();
+    var leaveDateset = new Array();
+
+        $( "#datepicker" ).datepicker({
+            onSelect: function(dateText, inst){
+                //检查数组中不存在就放入
+                dateText = formatStringdate(dateText)
+                console.log("转换后的datetext" + dateText)
+                if ($.inArray(dateText,leaveDates) == -1 ){
+                    var leavedate = {
+                    "Wechatno":"wechatno",
+                    "Datum":"",
+                     "Zday":""
+                }
+                    leaveDates.push(dateText);
+                    leavedate.Datum = dateText;
+                    console.log(leavedate);
+                    leaveDateset.push(leavedate);//json
+                    console.log(leaveDateset);
+                    //  $(".selectedDate").append('<input type="button"  data-icon="delete" data-iconpos="left" data-mini="true"  data-inline="true" id="selectedDate" value="' + dateText + '">');
+                    $(".selectedDate").append('<div class="ui-grid-a" id="daysel" style="padding: 0px; margin: 0px; border: 0px"><div class="ui-block-a" ><button class="ui-btn ui-shadow  ui-icon-delete ui-btn-icon-left ui-btn-inline"  id="selectedDate" style="margin-right: 0px;padding-right: 0px; width: 100%; border-right: 0px"  >' + dateText  + '</button></div>' +    ' <div class="ui-block-b"><select class="dayorhalf" name="reqType" data-shadow="false" data-corners="false" id="day1" style="border-left: 0px;width: 80%"> <option value="0">全天</option> <option value="1">上午</option> <option value="2">下午</option> </select></div></div>')
+                    $(".selectedDate").trigger("create");
+                }
+            },
+        });
+        $('#addNew').click(function(){
+        })
+    $("#selectedDate").click(function () {
+        console.log("selectdataclicked")
+        $(this).remove();
+    })
+    $(document).click(function (e) {
+        var v_id = $(e.target).attr('id');
+        if (v_id == 'selectedDate') { //删除选定日期
+            $(e.target).parent().next().fadeOut(300,function(){
+                $(e.target).parent().next().remove();
+
+            })
+            $(e.target).parent().fadeOut(600,function(){
+                $(e.target).parent().remove();
+
+            })
+            console.log($(e.target).context.innerText)
+            var tempdate;
+            tempdate = formatStringdate($.inArray($(e.target).context.innerText))
+            leaveDates.splice(tempdate, leaveDates, 1)
+            $.each(leaveDateset,function(key,val){
+                var temdate2
+                temdate2 = formatStringdate($(e.target).context.innerText)
+               if ( temdate2 ==  val.leaveday){
+                   leaveDateset.splice(key,1)
+               }
+            })
+
+            console.log(leaveDates)
+        }
+    })
+    $('#submit').click(function(){
+        console.log('年假类型' + $('#day').val());
+        req.Leavetyp = $('#day').val();
+        console.log('MEMO' + $('#textarea-1').val());
+        req.Memo = $('#textarea-1').val();
+        console.log("提交");
+       console.log(JSON.stringify(leaveDateset));
+        req.ReqDatesSet = leaveDateset;
+        console.log(req);
+        var url = "/sap/opu/odata/SAP/ZLEAVE_POST_DATE_SRV/ImportSet";
+        data = $.ajax({
+            type:"post",
+            data:JSON.stringify(req),
+            contentType: 'application/json',
+            cache:false,
+            url:url,
+            success:function(data){
+                alert("提交成功");
+            }
+        })
+    })
+   $('.selectedDate').on('change','.dayorhalf',function(){
+       var dayx = $(this).parentsUntil('.selectedDate').find('button.ui-btn').text();
+       dayx = formatStringdate(dayx)
+       var dayorhalf = $(this).val();
+       console.log($(this).val()); //全天半天
+       console.log($(this).parentsUntil('.selectedDate').find('button.ui-btn').text()) //日期
+       $.each(leaveDateset,function(key,val){
+           console.log(dayx);
+           console.log(val.leaveday);
+           console.log(dayx ==  val.leaveday);
+           if ( dayx ==  val.leaveday){
+               leaveDateset[key].dayorhalf = dayorhalf;
+
+           }
+       })
+   })
+
+    $("#addReason textarea").on("focus", function () {
+        $("#addReason").popup("reposition", {
+            y: 0
+        });
+    });
+
+    })
+</script>
+</body>
+</html>
